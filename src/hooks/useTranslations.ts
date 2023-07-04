@@ -1,11 +1,13 @@
 import { UseMutateAsyncFunction, useMutation } from "react-query";
+import { useDeeplContext } from "../components/deeplContext/DeeplContext";
 
 type IUseTranslations = ({ lang }: { lang?: string }) => {
   translateText: UseMutateAsyncFunction<any, unknown, string, unknown>;
 };
 
 export const useTranslations: IUseTranslations = ({ lang = "EN" }) => {
-  const DEEPL_KEY = "5608b95c-8518-1c51-488a-b10b6e6cbb39:fx";
+  const { deeplApiKey } = useDeeplContext();
+  const DEEPL_KEY = deeplApiKey;
 
   async function translateText(text: string) {
     const urlDeepL =
