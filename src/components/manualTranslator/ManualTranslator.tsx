@@ -17,6 +17,7 @@ import Select, { SelectItem } from '../select/Select';
 import ChangeFileAlert from './ChangeFileAlert';
 import { DeeplKeyHandler } from './DeeplKeyHandler';
 import TranslateAllAlert from './TranslateAllAlert';
+import { LanguageSelect } from '../select/predefinedSelects/LanguageSelect';
 
 const TranslatorHandler = ({
   text,
@@ -161,16 +162,7 @@ const TranslatorHandler = ({
         onSubmit={methods.handleSubmit(handleSubmit)}
       >
         <div className="flex justify-end w-full gap-4">
-          <Select placeholder="Select a language..." name="lang">
-            <SelectItem value="EN">English</SelectItem>
-            <SelectItem value="FR">French</SelectItem>
-            <SelectItem value="ES">Spanish</SelectItem>
-            <SelectItem value="DE">German</SelectItem>
-            <SelectItem value="IT">Italian</SelectItem>
-            <SelectItem value="PT">Portuguese</SelectItem>
-            <SelectItem value="RU">Russian</SelectItem>
-          </Select>
-
+          <LanguageSelect name="lang" />
           <TranslateAllAlert
             onAccept={handleTranslateAll}
             isLoading={isLoadingTranslations}
