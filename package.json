@@ -6,6 +6,7 @@
   "type": "module",
   "main": "bin/translation-tool",
   "author": "Medano Solution S.L.",
+  "files": ["dist", "package.json", "LICENSE", "README.md", "bin"],
   "license": "MIT",
   "repository": {
     "type": "git",
