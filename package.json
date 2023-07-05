@@ -1,5 +1,5 @@
 {
-  "name": "translation-tool",
+  "name": "@medanosol/translation-tool",
   "private": false,
   "version": "0.0.0",
   "type": "module",
