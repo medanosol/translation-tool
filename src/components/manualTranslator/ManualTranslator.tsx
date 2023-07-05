@@ -22,10 +22,12 @@ const TranslatorHandler = ({
   text,
   lang,
   sourceLang,
+  originalFileName,
 }: {
   text: any;
   lang: string;
   sourceLang: string;
+  originalFileName: string;
 }) => {
   const { deeplApiKey } = useDeeplContext();
   const [isLoadingTranslations, setIsLoadingTranslations] = useState(false);
@@ -50,7 +52,7 @@ const TranslatorHandler = ({
   const handleSubmit = (data: any) => {
     const jsonData = JSON.stringify(data.translations, null, 2);
     const blob = new Blob([jsonData], { type: 'application/json' });
-    saveAs(blob, `${data.lang.toLowerCase()}.json`);
+    saveAs(blob, `${originalFileName}-${data.lang.toLowerCase()}.json`);
   };
 
   const selectedLang = methods.watch('lang');
@@ -331,6 +333,7 @@ const ManualTranslator = () => {
                 <TranslatorHandler
                   text={fileAsJson}
                   lang="EN"
+                  originalFileName={files[0].file.name.split('.')[0]}
                   sourceLang={methods.watch('sourceLang') as string}
                 />
               </Accordion.Root>
