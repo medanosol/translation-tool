@@ -1,4 +1,4 @@
-![translation-tool cover](./src/assets/landing.png)
+<div align="center"><img src="https://github.com/medanosol/translation-tool/assets/71669730/fa23f864-de8f-4de1-8c93-1d341b87078e" alt="translation-tool cover"/></div>
 
 <div align="center"><strong>translation-tool</strong></div>
 <div align="center">The easiest way to translate your i18n files<br /></div>
