@@ -4,9 +4,9 @@
 <div align="center">The easiest way to translate your i18n files<br /></div>
 <br />
 <div align="center">
-<a href="https://react.email">Website</a> 
+<a href="https://github.com/medanosol/translation-tool">Website (Coming Soon)</a> 
 <span> · </span>
-<a href="https://github.com/resendlabs/react-email">GitHub</a> 
+<a href="https://github.com/medanosol/translation-tool">GitHub</a> 
 </div>
 
 ## Introduction
