@@ -23,7 +23,7 @@ jobs:
         run: npm ci && npm run build
       - name: Configure npm
         run: |
-          echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}' > .npmrc
+          echo '//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}' > .npmrc
           cat .npmrc
       - name: Publish package on NPM
         run: npm publish
