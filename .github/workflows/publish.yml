@@ -22,11 +22,10 @@ jobs:
       - name: Install dependencies and build
         run: npm ci && npm run build
       - name: Configure npm
-        run: |
-          echo '//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}' >> .npmrc
-          cat .npmrc
+        run: npm config set '//registry.npmjs.org/:_authToken' "${NODE_AUTH_TOKEN}"
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
       - name: Publish package on NPM
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
