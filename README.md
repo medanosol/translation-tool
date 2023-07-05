@@ -63,15 +63,6 @@ You just need to add the API key before you start trasnlating your files. If you
 
 Manually, you can translate your i18n files to any language you want. But if you want to use the Deepl API, you can only translate languages listed on the Deepl API Documentation: [Deepl API Docs](https://www.deepl.com/docs-api/translate-text/translate-text/)
 
-## Contributing
-
-- [Contribution Guide](https://react.email/docs/contributing)
-
-## Authors
-
-- Bu Kinoshita ([@bukinoshita](https://twitter.com/bukinoshita))
-- Zeno Rocha ([@zenorocha](https://twitter.com/zenorocha))
-
 ## License
 
 MIT License
