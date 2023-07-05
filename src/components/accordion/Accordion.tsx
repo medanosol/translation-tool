@@ -22,7 +22,7 @@ export const AccordionTrigger: React.FC<Accordion.AccordionTriggerProps> =
     <Accordion.Header className="flex">
       <Accordion.Trigger
         className={clsx(
-          "text-sky-400 shadow-sky-200 bg-sky-50 rounded-t-md hover:bg-sky-200 group flex h-[45px] flex-1 cursor-default items-center justify-between  px-5 text-[15px] leading-none shadow-[0_1px_0] outline-none",
+          "text-sky-400 cursor-pointer shadow-sky-200 bg-sky-50 rounded-t-md hover:bg-sky-200 group flex h-[45px] flex-1  items-center justify-between  px-5 text-[15px] leading-none shadow-[0_1px_0] outline-none",
           className
         )}
         {...props}

@@ -10,12 +10,23 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../accordion/Accordion";
+import { Button } from "../button/Button";
+import Collapsible from "../collapsible/Collapsible";
 import { useDeeplContext } from "../deeplContext/DeeplContext";
+import Select, { SelectItem } from "../select/Select";
 import ChangeFileAlert from "./ChangeFileAlert";
 import { DeeplKeyHandler } from "./DeeplKeyHandler";
 import TranslateAllAlert from "./TranslateAllAlert";
 
-const TranslatorHandler = ({ text, lang }: { text: any; lang: string }) => {
+const TranslatorHandler = ({
+  text,
+  lang,
+  sourceLang,
+}: {
+  text: any;
+  lang: string;
+  sourceLang: string;
+}) => {
   const { deeplApiKey } = useDeeplContext();
   const [isLoadingTranslations, setIsLoadingTranslations] = useState(false);
   const textWithoutValues: typeof text = useMemo(() => {
@@ -50,6 +61,7 @@ const TranslatorHandler = ({ text, lang }: { text: any; lang: string }) => {
   }, [selectedLang, textWithoutValues, methods]);
 
   const { translateText } = useTranslations({
+    sourceLang,
     lang: selectedLang,
   });
   const handleTranslateAll = async () => {
@@ -77,7 +89,7 @@ const TranslatorHandler = ({ text, lang }: { text: any; lang: string }) => {
         return (
           <AccordionItem value={key} key={key}>
             <AccordionTrigger className="flex">
-              <h4 className="text-xl font-medium text-slate-500">{key}</h4>
+              <h4 className="text-xl font-medium text-sky-900">{key}</h4>
             </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
               {renderInputFields(value, newPath)}
@@ -88,31 +100,30 @@ const TranslatorHandler = ({ text, lang }: { text: any; lang: string }) => {
 
       return (
         <li key={key}>
-          <span className="font-medium">{key}:</span>
+          <span className="font-medium text-sky-900">{key}:</span>
           <div className="flex gap-2">
             {value && value.toString().split(" ").length > 10 ? (
               <textarea
                 {...methods.register(`translations.${newPath.join(".")}`)}
-                className="w-full px-2 py-1 mx-2 rounded-md bg-sky-100"
+                className="w-full px-2 py-1 mx-2 rounded-md outline-none bg-sky-100 focus:ring-1 focus:ring-sky-200 placeholder:text-sky-900/50"
                 placeholder={value as string}
               />
             ) : (
               <input
                 {...methods.register(`translations.${newPath.join(".")}`)}
                 type="text"
-                className="w-full px-2 py-1 mx-2 rounded-md bg-sky-100"
+                className="w-full px-2 py-1 mx-2 rounded-md outline-none focus:ring-1 focus:ring-sky-200 bg-sky-100 placeholder:text-sky-900/50"
                 placeholder={value as string}
               />
             )}
 
-            <button
+            <Button
               title={
                 import.meta.env.VITE_DEEPL_API_KEY
                   ? "Translate"
                   : "You haven't set a deepl api key yet"
               }
               type="button"
-              className="flex items-center justify-center px-2 py-1 mx-2 rounded-md bg-sky-200 disabled:bg-gray-200"
               onClick={async () => {
                 if (!deeplApiKey) return;
                 const value = newPath.reduce((acc, key) => acc[key], text);
@@ -125,7 +136,7 @@ const TranslatorHandler = ({ text, lang }: { text: any; lang: string }) => {
               disabled={!deeplApiKey}
             >
               <MagicWandIcon />
-            </button>
+            </Button>
           </div>
         </li>
       );
@@ -147,26 +158,24 @@ const TranslatorHandler = ({ text, lang }: { text: any; lang: string }) => {
         className="flex flex-col w-full gap-4 p-4"
         onSubmit={methods.handleSubmit(handleSubmit)}
       >
-        <select
-          className="h-10 py-2 pl-4 text-white rounded-md bg-cyan-500"
-          {...methods.register("lang")}
-        >
-          <option value="EN">English</option>
-          <option value="FR">French</option>
-          <option value="ES">Spanish</option>
-          <option value="DE">German</option>
-          <option value="IT">Italian</option>
-          <option value="PT">Portuguese</option>
-          <option value="RU">Russian</option>
-        </select>
-        <TranslateAllAlert
-          onAccept={handleTranslateAll}
-          isLoading={isLoadingTranslations}
-        />
+        <div className="flex justify-end w-full gap-4">
+          <Select placeholder="Select a language..." name="lang">
+            <SelectItem value="EN">English</SelectItem>
+            <SelectItem value="FR">French</SelectItem>
+            <SelectItem value="ES">Spanish</SelectItem>
+            <SelectItem value="DE">German</SelectItem>
+            <SelectItem value="IT">Italian</SelectItem>
+            <SelectItem value="PT">Portuguese</SelectItem>
+            <SelectItem value="RU">Russian</SelectItem>
+          </Select>
+
+          <TranslateAllAlert
+            onAccept={handleTranslateAll}
+            isLoading={isLoadingTranslations}
+          />
+        </div>
         {renderInputFields(text)}
-        <button type="submit" className="px-2 py-1 mx-2 bg-blue-200 rounded-md">
-          Save Translations
-        </button>
+        <Button type="submit">Save as file</Button>
       </form>
     </FormProvider>
   );
@@ -175,6 +184,33 @@ const TranslatorHandler = ({ text, lang }: { text: any; lang: string }) => {
 const ManualTranslator = () => {
   const [files, setFiles] = useState<{ file: File; content: object }[]>([]);
   const [fileAsJson, setFileAsJson] = useState<object>({});
+  const [collapsiblesOpen, setCollapsiblesOpen] = useState<{
+    first: boolean;
+    second: boolean;
+  }>({
+    first: true,
+    second: true,
+  });
+  const methods = useForm();
+  const handleCollapsibleToggle = (collapsible: "first" | "second") => {
+    if (
+      collapsiblesOpen.first &&
+      !collapsiblesOpen.second &&
+      collapsible === "first"
+    )
+      return;
+    if (
+      !collapsiblesOpen.first &&
+      collapsiblesOpen.second &&
+      collapsible === "second"
+    )
+      return;
+    setCollapsiblesOpen((prev) => ({
+      ...prev,
+      [collapsible]: !prev[collapsible],
+    }));
+  };
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     acceptedFiles.forEach((file: File) => {
       const reader = new FileReader();
@@ -199,7 +235,7 @@ const ManualTranslator = () => {
         return (
           <AccordionItem value={key} key={key}>
             <AccordionTrigger className="flex">
-              <h4 className="text-xl font-medium text-slate-500">{key}</h4>
+              <h4 className="text-xl font-medium text-sky-900">{key}</h4>
             </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-2">
               {renderOriginalValues(value, newPath)}
@@ -210,50 +246,97 @@ const ManualTranslator = () => {
 
       return (
         <li key={key}>
-          <span className="font-medium">{key}:</span>
-          <span className="px-2 py-1 mx-2 leading-loose rounded-md bg-sky-200">
+          <span className="font-medium text-sky-900">{key}:</span>
+          <span className="px-2 py-1 mx-2 leading-loose rounded-md bg-sky-100 text-sky-900">
             {value}
           </span>
         </li>
       );
     });
   };
-
+  const sourceLang = methods.watch("sourceLang");
   return (
     <>
       {files.length === 0 && (
         <div className="flex flex-col gap-2">
-          <div
-            {...getRootProps()}
-            className={`p-4 border-2 border-dashed ${
-              isDragActive ? "bg-gray-200" : ""
-            }`}
-          >
-            <>
-              <input {...getInputProps()} />
-              <p>Drag 'n' drop your i18n file here</p>
-            </>
+          <div className="flex flex-col gap-4">
+            <FormProvider {...methods}>
+              <label className="flex flex-col w-1/3 gap-2 mx-auto">
+                <span className="text-sm text-center text-sky-900">
+                  Select a source language (the language used in the file)
+                </span>
+                <Select placeholder="Select a language..." name="sourceLang">
+                  <SelectItem value="EN">English</SelectItem>
+                  <SelectItem value="FR">French</SelectItem>
+                  <SelectItem value="ES">Spanish</SelectItem>
+                  <SelectItem value="DE">German</SelectItem>
+                  <SelectItem value="IT">Italian</SelectItem>
+                  <SelectItem value="PT">Portuguese</SelectItem>
+                  <SelectItem value="RU">Russian</SelectItem>
+                </Select>
+              </label>
+            </FormProvider>
+            {sourceLang && (
+              <div
+                {...getRootProps()}
+                className={`w-full cursor-pointer p-4 border-2 border-dashed border-sky-500 bg-sky-100 ${
+                  isDragActive ? "bg-gray-200" : ""
+                }`}
+              >
+                <>
+                  <input {...getInputProps()} />
+                  <span className="text-sky-500">
+                    Drag 'n' drop your i18n file here
+                  </span>
+                </>
+              </div>
+            )}
           </div>
           <DeeplKeyHandler />
         </div>
       )}
       {files.length > 0 && (
-        <div className="relative grid w-full grid-cols-12 gap-4">
-          <Accordion.Root
-            className="w-full flex flex-col space-y-4 rounded-md shadow-[0_2px_10px] shadow-black/5 col-span-6 h-max p-4"
-            type="multiple"
-            defaultValue={[...Object.keys(files[0].content).map((key) => key)]}
-          >
-            {renderOriginalValues(files[0].content)}
-          </Accordion.Root>
-          <Accordion.Root
-            className="w-full rounded-md shadow-[0_2px_10px] shadow-black/5 col-span-6 h-max"
-            type="multiple"
-            defaultValue={[...Object.keys(files[0].content).map((key) => key)]}
-          >
-            <TranslatorHandler text={fileAsJson} lang="EN" />
-          </Accordion.Root>
-          <ChangeFileAlert onAccept={() => setFiles([])} />
+        <div className="flex flex-col gap-4">
+          <span className="text-2xl font-medium text-center text-sky-900">
+            File: {files[0].file.name}
+          </span>
+          <div className="relative flex w-full gap-4">
+            <Collapsible
+              open={collapsiblesOpen.first}
+              onOpenChange={() => handleCollapsibleToggle("first")}
+            >
+              <Accordion.Root
+                className="w-full flex flex-col space-y-4 rounded-md shadow-[0_2px_10px] shadow-black/5 col-span-6 h-max p-4"
+                type="multiple"
+                defaultValue={[
+                  ...Object.keys(files[0].content).map((key) => key),
+                ]}
+              >
+                {renderOriginalValues(files[0].content)}
+              </Accordion.Root>
+            </Collapsible>
+            <Collapsible
+              open={collapsiblesOpen.second}
+              onOpenChange={(open) => {
+                handleCollapsibleToggle("second");
+              }}
+            >
+              <Accordion.Root
+                className="w-full rounded-md shadow-[0_2px_10px] shadow-black/5 col-span-6 h-max"
+                type="multiple"
+                defaultValue={[
+                  ...Object.keys(files[0].content).map((key) => key),
+                ]}
+              >
+                <TranslatorHandler
+                  text={fileAsJson}
+                  lang="EN"
+                  sourceLang={methods.watch("sourceLang") as string}
+                />
+              </Accordion.Root>
+            </Collapsible>
+            <ChangeFileAlert onAccept={() => setFiles([])} />
+          </div>
         </div>
       )}
     </>

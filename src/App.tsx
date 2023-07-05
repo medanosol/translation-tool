@@ -1,12 +1,11 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-// import Translator from "./components/Translator";
 import { DeeplContextProvider } from "./components/deeplContext/DeeplContext";
 import ManualTranslator from "./components/manualTranslator/ManualTranslator";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // default: true
+      refetchOnWindowFocus: false,
     },
   },
 });
@@ -19,7 +18,6 @@ function App() {
       <main className="w-full">
         <DeeplContextProvider>
           <QueryClientProvider client={queryClient}>
-            {/* <Translator /> */}
             <ManualTranslator />
           </QueryClientProvider>
         </DeeplContextProvider>

@@ -1,5 +1,6 @@
 import CryptoJS from "crypto-js";
 import { useState } from "react";
+import { Button } from "../button/Button";
 import { useDeeplContext } from "../deeplContext/DeeplContext";
 
 export const DeeplKeyHandler = () => {
@@ -8,16 +9,17 @@ export const DeeplKeyHandler = () => {
 
   if (deeplApiKey) {
     return (
-      <div className="flex flex-col gap-2">
-        <span className="text-green-500">The key is set</span>
-        <button
+      <div className="flex flex-col gap-2 w-max">
+        <span className="text-sm font-medium text-sky-500">The key is set</span>
+        <Button
+          className="!text-red11 !bg-red4 hover:!bg-red5 !focus:shadow-red7"
           onClick={() => {
             setDeeplApiKey("");
             localStorage.removeItem("deeplAPIKey");
           }}
         >
           Remove the key
-        </button>
+        </Button>
       </div>
     );
   }
