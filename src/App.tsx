@@ -12,7 +12,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <div className="container flex flex-col items-center justify-center w-screen min-h-screen px-20 py-10 mx-auto">
-      <header className="fixed top-0 flex flex-col gap-2 p-4">
+      <header className="flex flex-col gap-2 p-4">
         <span className="text-6xl font-bold text-center text-sky-600">
           translation-tool
         </span>
@@ -20,7 +20,7 @@ function App() {
           A simple tool to translate your i18n files
         </span>
       </header>
-      <main className="w-full">
+      <main className="flex flex-grow items-center justify-center w-full">
         <DeeplContextProvider>
           <QueryClientProvider client={queryClient}>
             <ManualTranslator />
