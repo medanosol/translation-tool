@@ -15,9 +15,11 @@ const TranslateAllAlert: React.FC<ChangeFileAlertProps> = ({
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>
-        <Button disabled={isLoading || !deeplApiKey}>
-          {isLoading ? "Loading..." : "Translate all"}
-        </Button>
+        <div>
+          <Button disabled={isLoading || !deeplApiKey}>
+            {isLoading ? "Loading..." : "Translate all"}
+          </Button>
+        </div>
       </AlertDialog.Trigger>
       <AlertDialog.Portal>
         <AlertDialog.Overlay className="bg-blackA9 data-[state=open]:animate-overlayShow fixed inset-0" />
@@ -30,15 +32,19 @@ const TranslateAllAlert: React.FC<ChangeFileAlertProps> = ({
           </AlertDialog.Description>
           <div className="flex justify-end gap-[25px]">
             <AlertDialog.Cancel asChild>
-              <Button>Cancel</Button>
+              <div>
+                <Button>Cancel</Button>
+              </div>
             </AlertDialog.Cancel>
             <AlertDialog.Action asChild>
-              <Button
-                className="!text-red11 !bg-red4 hover:!bg-red5 focus:!shadow-red7"
-                onClick={onAccept}
-              >
-                Yes, translate all
-              </Button>
+              <div>
+                <Button
+                  className="!text-red11 !bg-red4 hover:!bg-red5 focus:!shadow-red7"
+                  onClick={onAccept}
+                >
+                  Yes, translate all
+                </Button>
+              </div>
             </AlertDialog.Action>
           </div>
         </AlertDialog.Content>

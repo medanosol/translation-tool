@@ -302,7 +302,7 @@ const ManualTranslator = () => {
           <span className="text-2xl font-medium text-center text-sky-900">
             File: {files[0].file.name}
           </span>
-          <div className="relative flex w-full gap-4">
+          <div className="relative flex flex-col w-full gap-4 md:flex-row">
             <Collapsible
               open={collapsiblesOpen.first}
               onOpenChange={() => handleCollapsibleToggle('first')}

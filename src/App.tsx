@@ -1,6 +1,6 @@
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { DeeplContextProvider } from './components/deeplContext/DeeplContext';
-import ManualTranslator from './components/manualTranslator/ManualTranslator';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { DeeplContextProvider } from "./components/deeplContext/DeeplContext";
+import ManualTranslator from "./components/manualTranslator/ManualTranslator";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -11,7 +11,7 @@ const queryClient = new QueryClient({
 });
 function App() {
   return (
-    <div className="container flex flex-col items-center justify-center w-screen min-h-screen px-20 py-10 mx-auto">
+    <div className="container flex flex-col items-center justify-center w-screen min-h-screen px-10 py-10 mx-auto md:px-20">
       <header className="flex flex-col gap-2 p-4">
         <span className="text-6xl font-bold text-center text-sky-600">
           translation-tool
@@ -20,7 +20,7 @@ function App() {
           A simple tool to translate your i18n files
         </span>
       </header>
-      <main className="flex flex-grow items-center justify-center w-full">
+      <main className="flex items-center justify-center flex-grow w-full">
         <DeeplContextProvider>
           <QueryClientProvider client={queryClient}>
             <ManualTranslator />
