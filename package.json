@@ -2,11 +2,17 @@
   "name": "@medanosol/translation-tool",
   "description": "@medanosol/translation-tool is a tool that allows you to translate your i18n files in a simple and fast way. You can manually translate the files or use the Deepl API to translate them automatically.",
   "private": false,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "main": "bin/translation-tool",
   "author": "Medano Solution S.L.",
-  "files": ["dist", "package.json", "LICENSE", "README.md", "bin"],
+  "files": [
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md",
+    "bin"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -15,7 +21,14 @@
   "bugs": {
     "url": "https://github.com/medanosol/translation-tool/issues"
   },
-  "keywords": ["i18n", "translation", "gui", "language", "languages", "deepl"],
+  "keywords": [
+    "i18n",
+    "translation",
+    "gui",
+    "language",
+    "languages",
+    "deepl"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
