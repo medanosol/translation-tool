@@ -4,9 +4,6 @@
   "version": "0.0.0",
   "type": "module",
   "main": "bin/translation-tool",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
