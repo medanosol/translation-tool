@@ -1,6 +1,6 @@
-![medsol-i18n cover](./src/assets/landing.png)
+![translation-tool cover](./src/assets/landing.png)
 
-<div align="center"><strong>medsol-i18n</strong></div>
+<div align="center"><strong>translation-tool</strong></div>
 <div align="center">The easiest way to translate your i18n files<br /></div>
 <br />
 <div align="center">
@@ -11,7 +11,7 @@
 
 ## Introduction
 
-medsol-i18n is a tool that allows you to translate your i18n files in a simple and fast way. You can manually translate the files or use the Deepl API to translate them automatically.
+translation-tool is a tool that allows you to translate your i18n files in a simple and fast way. You can manually translate the files or use the Deepl API to translate them automatically.
 
 ## Why
 
@@ -24,13 +24,13 @@ Install the package using your favorite package manager.
 #### With yarn
 
 ```sh
-yarn add medsol-i18n --dev
+yarn add translation-tool --dev
 ```
 
 #### With npm
 
 ```sh
-npm install medsol-i18n -D
+npm install translation-tool -D
 ```
 
 ## Getting started
@@ -39,7 +39,7 @@ Once you have installed the package, add the following command to your package.j
 
 ```json
 "scripts": {
-  "translate": "medsol-i18n"
+  "translate": "translation-tool"
 }
 ```
 
@@ -47,7 +47,7 @@ Then, when you run the command `yarn translate` or `npm run translate`, the tool
 
 ```json
 "scripts": {
-  "translate": "medsol-i18n --port 3001"
+  "translate": "translation-tool --port 3001"
 }
 ```
 

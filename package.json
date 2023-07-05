@@ -1,15 +1,18 @@
 {
-  "name": "medsol-i18n",
+  "name": "translation-tool",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "bin/medsol-i18n",
+  "main": "bin/translation-tool",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "serve ./node_modules/medsol-i18n/dist"
+    "start": "serve ./node_modules/translation-tool/dist"
   },
   "dependencies": {
     "@radix-ui/colors": "^1.0.0",
@@ -49,6 +52,6 @@
     "vite": "^4.3.9"
   },
   "bin": {
-    "medsol-i18n": "./bin/medsol-i18n.js"
+    "translation-tool": "./bin/translation-tool.js"
   }
 }
