@@ -24,13 +24,13 @@ Install the package using your favorite package manager.
 #### With yarn
 
 ```sh
-yarn add translation-tool --dev
+yarn add @medanosol/translation-tool --dev
 ```
 
 #### With npm
 
 ```sh
-npm install translation-tool -D
+npm install @medanosol/translation-tool -D
 ```
 
 ## Getting started
