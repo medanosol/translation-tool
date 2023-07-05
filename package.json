@@ -1,15 +1,15 @@
 {
-  "name": "i18n-medanosol",
+  "name": "medsol-i18n",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "bin/i18n-medanosol",
+  "main": "bin/medsol-i18n",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "serve ./node_modules/i18n-medanosol/dist"
+    "start": "serve ./node_modules/medsol-i18n/dist"
   },
   "dependencies": {
     "@radix-ui/colors": "^1.0.0",
@@ -49,6 +49,6 @@
     "vite": "^4.3.9"
   },
   "bin": {
-    "i18n-medanosol": "./bin/i18n-medanosol.js"
+    "medsol-i18n": "./bin/medsol-i18n.js"
   }
 }
