@@ -16,7 +16,7 @@ const TranslateAllAlert: React.FC<ChangeFileAlertProps> = ({
     <AlertDialog.Root>
       <AlertDialog.Trigger asChild>
         <div>
-          <Button disabled={isLoading || !deeplApiKey}>
+          <Button disabled={isLoading || !deeplApiKey} type="button">
             {isLoading ? "Loading..." : "Translate all"}
           </Button>
         </div>
