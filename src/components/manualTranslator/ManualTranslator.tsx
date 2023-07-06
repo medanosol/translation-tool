@@ -1,23 +1,23 @@
-import * as Accordion from '@radix-ui/react-accordion';
-import { MagicWandIcon, UpdateIcon } from '@radix-ui/react-icons';
-import { saveAs } from 'file-saver';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { FormProvider, useForm } from 'react-hook-form';
-import { useTranslations } from '../../hooks/useTranslations';
+import * as Accordion from "@radix-ui/react-accordion";
+import { MagicWandIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { saveAs } from "file-saver";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { FormProvider, useForm } from "react-hook-form";
+import { useTranslations } from "../../hooks/useTranslations";
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '../accordion/Accordion';
-import { Button } from '../button/Button';
-import Collapsible from '../collapsible/Collapsible';
-import { useDeeplContext } from '../deeplContext/DeeplContext';
-import Select, { SelectItem } from '../select/Select';
-import ChangeFileAlert from './ChangeFileAlert';
-import { DeeplKeyHandler } from './DeeplKeyHandler';
-import TranslateAllAlert from './TranslateAllAlert';
-import { LanguageSelect } from '../select/predefinedSelects/LanguageSelect';
+} from "../accordion/Accordion";
+import { Button } from "../button/Button";
+import Collapsible from "../collapsible/Collapsible";
+import { useDeeplContext } from "../deeplContext/DeeplContext";
+import Select, { SelectItem } from "../select/Select";
+import { LanguageSelect } from "../select/predefinedSelects/LanguageSelect";
+import ChangeFileAlert from "./ChangeFileAlert";
+import { DeeplKeyHandler } from "./DeeplKeyHandler";
+import TranslateAllAlert from "./TranslateAllAlert";
 
 const TranslatorHandler = ({
   text,
@@ -35,10 +35,10 @@ const TranslatorHandler = ({
   const textWithoutValues: typeof text = useMemo(() => {
     const removeValues = (content: object): any => {
       return Object.entries(content).reduce((acc, [key, value]) => {
-        if (typeof value === 'object' && !Array.isArray(value)) {
+        if (typeof value === "object" && !Array.isArray(value)) {
           return { ...acc, [key]: removeValues(value) };
         }
-        return { ...acc, [key]: '' };
+        return { ...acc, [key]: "" };
       }, {});
     };
     return removeValues(text);
@@ -52,15 +52,15 @@ const TranslatorHandler = ({
   });
   const handleSubmit = (data: any) => {
     const jsonData = JSON.stringify(data.translations, null, 2);
-    const blob = new Blob([jsonData], { type: 'application/json' });
+    const blob = new Blob([jsonData], { type: "application/json" });
     saveAs(blob, `${originalFileName}-${data.lang.toLowerCase()}.json`);
   };
 
-  const selectedLang = methods.watch('lang');
+  const selectedLang = methods.watch("lang");
 
   // when the language changes, reset the values
   useEffect(() => {
-    methods.setValue('translations', { ...textWithoutValues });
+    methods.setValue("translations", { ...textWithoutValues });
   }, [selectedLang, textWithoutValues, methods]);
 
   const { translateText } = useTranslations({
@@ -71,7 +71,7 @@ const TranslatorHandler = ({
     const translate = async (content: any): Promise<any> => {
       const translatedContent: any = {};
       for (const [key, value] of Object.entries(content)) {
-        if (typeof value === 'object' && !Array.isArray(value)) {
+        if (typeof value === "object" && !Array.isArray(value)) {
           translatedContent[key] = await translate(value);
         } else {
           translatedContent[key] = await translateText(value as string);
@@ -82,13 +82,13 @@ const TranslatorHandler = ({
     setIsLoadingTranslations(true);
     const translatedText = await translate(text);
     setIsLoadingTranslations(false);
-    methods.setValue('translations', { ...translatedText });
+    methods.setValue("translations", { ...translatedText });
   };
   const renderInputFields = (content: any, path: string[] = []) => {
     return Object.entries(content).map(([key, value]) => {
       const newPath = [...path, key];
 
-      if (typeof value === 'object' && !Array.isArray(value)) {
+      if (typeof value === "object" && !Array.isArray(value)) {
         return (
           <AccordionItem value={key} key={key}>
             <AccordionTrigger className="flex">
@@ -105,15 +105,15 @@ const TranslatorHandler = ({
         <li key={key}>
           <span className="font-medium text-sky-900">{key}:</span>
           <div className="flex gap-2">
-            {value && value.toString().split(' ').length > 10 ? (
+            {value && value.toString().split(" ").length > 10 ? (
               <textarea
-                {...methods.register(`translations.${newPath.join('.')}`)}
+                {...methods.register(`translations.${newPath.join(".")}`)}
                 className="w-full px-2 py-1 mx-2 rounded-md outline-none bg-sky-100 focus:ring-1 focus:ring-sky-200 placeholder:text-sky-900/50"
                 placeholder={value as string}
               />
             ) : (
               <input
-                {...methods.register(`translations.${newPath.join('.')}`)}
+                {...methods.register(`translations.${newPath.join(".")}`)}
                 type="text"
                 className="w-full px-2 py-1 mx-2 rounded-md outline-none focus:ring-1 focus:ring-sky-200 bg-sky-100 placeholder:text-sky-900/50"
                 placeholder={value as string}
@@ -123,7 +123,7 @@ const TranslatorHandler = ({
             <Button
               title={
                 import.meta.env.VITE_DEEPL_API_KEY
-                  ? 'Translate'
+                  ? "Translate"
                   : "You haven't set a deepl api key yet"
               }
               type="button"
@@ -132,7 +132,7 @@ const TranslatorHandler = ({
                 const value = newPath.reduce((acc, key) => acc[key], text);
                 const translatedValue = await translateText(value);
                 methods.setValue(
-                  `translations.${newPath.join('.')}`,
+                  `translations.${newPath.join(".")}`,
                   translatedValue
                 );
               }}
@@ -186,17 +186,17 @@ const ManualTranslator = () => {
     second: true,
   });
   const methods = useForm();
-  const handleCollapsibleToggle = (collapsible: 'first' | 'second') => {
+  const handleCollapsibleToggle = (collapsible: "first" | "second") => {
     if (
       collapsiblesOpen.first &&
       !collapsiblesOpen.second &&
-      collapsible === 'first'
+      collapsible === "first"
     )
       return;
     if (
       !collapsiblesOpen.first &&
       collapsiblesOpen.second &&
-      collapsible === 'second'
+      collapsible === "second"
     )
       return;
     setCollapsiblesOpen((prev) => ({
@@ -225,7 +225,7 @@ const ManualTranslator = () => {
   const renderOriginalValues = (content: object, path: string[] = []) => {
     return Object.entries(content).map(([key, value]) => {
       const newPath = [...path, key];
-      if (typeof value === 'object' && !Array.isArray(value)) {
+      if (typeof value === "object" && !Array.isArray(value)) {
         return (
           <AccordionItem value={key} key={key}>
             <AccordionTrigger className="flex">
@@ -248,7 +248,7 @@ const ManualTranslator = () => {
       );
     });
   };
-  const sourceLang = methods.watch('sourceLang');
+  const sourceLang = methods.watch("sourceLang");
   return (
     <div className="w-full">
       {files.length === 0 && (
@@ -274,7 +274,7 @@ const ManualTranslator = () => {
               <div
                 {...getRootProps()}
                 className={`w-full cursor-pointer p-4 border-2 border-dashed border-sky-500 bg-sky-100 ${
-                  isDragActive ? 'bg-gray-200' : ''
+                  isDragActive ? "bg-gray-200" : ""
                 }`}
               >
                 <>
@@ -291,13 +291,18 @@ const ManualTranslator = () => {
       )}
       {files.length > 0 && (
         <div className="flex flex-col gap-4">
-          <span className="text-2xl font-medium text-center text-sky-900">
-            File: {files[0].file.name}
-          </span>
+          <div className="flex flex-col gap-2">
+            <span className="text-2xl font-medium text-center text-sky-900">
+              File: {files[0].file.name}
+            </span>
+            <span className="text-lg font-medium text-center text-sky-900">
+              Original language: {sourceLang}
+            </span>
+          </div>
           <div className="relative flex flex-col w-full gap-4 md:flex-row">
             <Collapsible
               open={collapsiblesOpen.first}
-              onOpenChange={() => handleCollapsibleToggle('first')}
+              onOpenChange={() => handleCollapsibleToggle("first")}
             >
               <Accordion.Root
                 className="w-full flex flex-col space-y-4 rounded-md shadow-[0_2px_10px] shadow-black/5 col-span-6 h-max p-4"
@@ -312,7 +317,7 @@ const ManualTranslator = () => {
             <Collapsible
               open={collapsiblesOpen.second}
               onOpenChange={(open) => {
-                handleCollapsibleToggle('second');
+                handleCollapsibleToggle("second");
               }}
             >
               <Accordion.Root
@@ -325,8 +330,8 @@ const ManualTranslator = () => {
                 <TranslatorHandler
                   text={fileAsJson}
                   lang="EN"
-                  originalFileName={files[0].file.name.split('.')[0]}
-                  sourceLang={methods.watch('sourceLang') as string}
+                  originalFileName={files[0].file.name.split(".")[0]}
+                  sourceLang={methods.watch("sourceLang") as string}
                 />
               </Accordion.Root>
             </Collapsible>

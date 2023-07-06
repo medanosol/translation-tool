@@ -39,27 +39,7 @@ export const DeeplKeyHandler = () => {
 
   return (
     <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          onChange={(e) => {
-            setSaveKeyInBrowser(e.target.checked);
-            if (deeplApiKey && e.target.checked) {
-              localStorage.setItem(
-                "deeplAPIKey",
-                CryptoJS.AES.encrypt(
-                  deeplApiKey,
-                  import.meta.env.VITE_ENCRYPT_KEY
-                ).toString()
-              );
-            } else {
-              localStorage.removeItem("deeplAPIKey");
-            }
-          }}
-        />
-        <span>Save the key for future use</span>
-      </label>
-      <div className="flex items-end justify-end gap-2">
+      <div className="flex flex-col gap-2">
         <label className="flex flex-col w-full gap-1">
           <span>
             Insert your deepl API key.{" "}
@@ -76,15 +56,37 @@ export const DeeplKeyHandler = () => {
             </span>
           </span>
           <input
-            className="px-2 py-1 rounded-md bg-sky-100"
+            required
+            className="w-full px-2 py-1 rounded-md outline-none focus:ring-1 focus:ring-sky-200 bg-sky-100 placeholder:text-sky-900/50"
             type="text"
             name="key"
             placeholder="Deepl key"
           />
         </label>
-        <button className="px-2 py-1 rounded-md bg-sky-200 h-max" type="submit">
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            className="accent-sky-500"
+            onChange={(e) => {
+              setSaveKeyInBrowser(e.target.checked);
+              if (deeplApiKey && e.target.checked) {
+                localStorage.setItem(
+                  "deeplAPIKey",
+                  CryptoJS.AES.encrypt(
+                    deeplApiKey,
+                    import.meta.env.VITE_ENCRYPT_KEY
+                  ).toString()
+                );
+              } else {
+                localStorage.removeItem("deeplAPIKey");
+              }
+            }}
+          />
+          <span>Save the key for future use</span>
+        </label>
+        <Button className="w-max" type="submit">
           Save
-        </button>
+        </Button>
       </div>
     </form>
   );
