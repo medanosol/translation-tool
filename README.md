@@ -59,6 +59,8 @@ To use the Deepl API, you need to create an account on their website and get an 
 
 You just need to add the API key before you start trasnlating your files. If you want to skip doing this every time you open the tool, we added a way to save your API key in the browser's local storage. To do this, just click on the "Save API Key" button and the next time you open the tool, it will automatically load your API key. It's encrypted, so don't worry about security. If you still don't feel safe, you can always delete it from the local storage and add it manually every time you open the tool.
 
+![demo-image](https://github.com/medanosol/translation-tool/assets/47543076/9526b559-0146-4e75-8d45-9b05537eaad6)
+
 ## Supported languages
 
 Manually, you can translate your i18n files to any language you want. But if you want to use the Deepl API, you can only translate languages listed on the Deepl API Documentation: [Deepl API Docs](https://www.deepl.com/docs-api/translate-text/translate-text/)
