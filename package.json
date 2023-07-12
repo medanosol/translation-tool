@@ -2,7 +2,7 @@
   "name": "@medanosol/translation-tool",
   "description": "@medanosol/translation-tool is a tool that allows you to translate your i18n files in a simple and fast way. You can manually translate the files or use the Deepl API to translate them automatically.",
   "private": false,
-  "version": "0.0.7",
+  "version": "0.0.8",
   "type": "module",
   "main": "bin/translation-tool",
   "author": "Medano Solution S.L.",
