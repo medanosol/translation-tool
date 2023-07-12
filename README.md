@@ -4,7 +4,7 @@
 <div align="center">The easiest way to translate your i18n files<br /></div>
 <br />
 <div align="center">
-<a href="https://github.com/medanosol/translation-tool">Website (Coming Soon)</a> 
+<a href="https://medanosol.github.io/translation-tool.html">Website</a> 
 <span> · </span>
 <a href="https://github.com/medanosol/translation-tool">GitHub</a> 
 </div>
