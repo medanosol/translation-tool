@@ -4,6 +4,7 @@ import { saveAs } from "file-saver";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { useTranslations } from "../../hooks/useTranslations";
 import {
   AccordionContent,
@@ -14,9 +15,13 @@ import { Button } from "../button/Button";
 import Collapsible from "../collapsible/Collapsible";
 import { useDeeplContext } from "../deeplContext/DeeplContext";
 import Select, { SelectItem } from "../select/Select";
-import { LanguageSelect } from "../select/predefinedSelects/LanguageSelect";
+import {
+  LanguageSelect,
+  PARSED_LANGUAGES,
+} from "../select/predefinedSelects/LanguageSelect";
 import ChangeFileAlert from "./ChangeFileAlert";
 import { DeeplKeyHandler } from "./DeeplKeyHandler";
+import PartialFileDialog from "./PartialFileDialog";
 import TranslateAllAlert from "./TranslateAllAlert";
 
 const TranslatorHandler = ({
@@ -54,6 +59,7 @@ const TranslatorHandler = ({
     const jsonData = JSON.stringify(data.translations, null, 2);
     const blob = new Blob([jsonData], { type: "application/json" });
     saveAs(blob, `${originalFileName}-${data.lang.toLowerCase()}.json`);
+    toast.success("File downloaded successfully");
   };
 
   const selectedLang = methods.watch("lang");
@@ -67,13 +73,16 @@ const TranslatorHandler = ({
     sourceLang,
     lang: selectedLang,
   });
-  const handleTranslateAll = async () => {
+  const handleTranslateAll = async (all: boolean) => {
     const translate = async (content: any): Promise<any> => {
       const translatedContent: any = {};
       for (const [key, value] of Object.entries(content)) {
         if (typeof value === "object" && !Array.isArray(value)) {
           translatedContent[key] = await translate(value);
         } else {
+          if (methods.getValues("translations")[key] && !all) {
+            continue;
+          }
           translatedContent[key] = await translateText(value as string);
         }
       }
@@ -122,7 +131,7 @@ const TranslatorHandler = ({
 
             <Button
               title={
-                import.meta.env.VITE_DEEPL_API_KEY
+                deeplApiKey
                   ? "Translate"
                   : "You haven't set a deepl api key yet"
               }
@@ -167,15 +176,40 @@ const TranslatorHandler = ({
             onAccept={handleTranslateAll}
             isLoading={isLoadingTranslations}
           />
+          <PartialFileDialog
+            onUpload={(content) => {
+              methods.setValue("translations", content);
+            }}
+            lang={PARSED_LANGUAGES[selectedLang]}
+          />
         </div>
         {renderInputFields(text)}
         <Button type="submit">Save as file</Button>
+        <Button
+          type="button"
+          onClick={() => {
+            const jsonData = JSON.stringify(
+              methods.getValues("translations"),
+              null,
+              2
+            );
+            navigator.clipboard.writeText(jsonData);
+            toast.success("Copied to clipboard");
+          }}
+        >
+          Copy to clipboard
+        </Button>
       </form>
     </FormProvider>
   );
 };
 
-const ManualTranslator = () => {
+interface ManualTranslatorProps {
+  setHideHeader: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const ManualTranslator: React.FC<ManualTranslatorProps> = ({
+  setHideHeader,
+}) => {
   const [files, setFiles] = useState<{ file: File; content: object }[]>([]);
   const [fileAsJson, setFileAsJson] = useState<object>({});
   const [collapsiblesOpen, setCollapsiblesOpen] = useState<{
@@ -212,6 +246,7 @@ const ManualTranslator = () => {
         const content = JSON.parse(reader.result as string);
         setFiles((prevFiles) => [...prevFiles, { file, content }]);
         setFileAsJson(content);
+        setHideHeader(true);
       };
       reader.readAsText(file);
     });
@@ -291,14 +326,6 @@ const ManualTranslator = () => {
       )}
       {files.length > 0 && (
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <span className="text-2xl font-medium text-center text-sky-900">
-              File: {files[0].file.name}
-            </span>
-            <span className="text-lg font-medium text-center text-sky-900">
-              Original language: {sourceLang}
-            </span>
-          </div>
           <div className="relative flex flex-col w-full gap-4 md:flex-row">
             <Collapsible
               open={collapsiblesOpen.first}
@@ -311,12 +338,20 @@ const ManualTranslator = () => {
                   ...Object.keys(files[0].content).map((key) => key),
                 ]}
               >
+                <div className="flex flex-wrap justify-between gap-2">
+                  <span className="text-lg font-medium text-center text-sky-900">
+                    {files[0].file.name}
+                  </span>
+                  <span className="font-medium text-center text-sky-900">
+                    {PARSED_LANGUAGES[sourceLang]}
+                  </span>
+                </div>
                 {renderOriginalValues(files[0].content)}
               </Accordion.Root>
             </Collapsible>
             <Collapsible
               open={collapsiblesOpen.second}
-              onOpenChange={(open) => {
+              onOpenChange={() => {
                 handleCollapsibleToggle("second");
               }}
             >
@@ -329,13 +364,19 @@ const ManualTranslator = () => {
               >
                 <TranslatorHandler
                   text={fileAsJson}
-                  lang="EN"
+                  lang="ES"
                   originalFileName={files[0].file.name.split(".")[0]}
                   sourceLang={methods.watch("sourceLang") as string}
                 />
               </Accordion.Root>
             </Collapsible>
-            <ChangeFileAlert onAccept={() => setFiles([])} />
+            <ChangeFileAlert
+              onAccept={() => {
+                setFiles([]);
+                setFileAsJson({});
+                setHideHeader(false);
+              }}
+            />
           </div>
         </div>
       )}

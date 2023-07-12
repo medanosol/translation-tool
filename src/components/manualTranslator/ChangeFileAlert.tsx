@@ -9,7 +9,9 @@ const ChangeFileAlert: React.FC<ChangeFileAlertProps> = ({ onAccept }) => (
   <AlertDialog.Root>
     <AlertDialog.Trigger asChild>
       <div>
-        <Button className="absolute right-0 -top-10">Change file</Button>
+        <Button className="absolute right-0 -top-10 !text-red11 !bg-red4 hover:!bg-red5 focus:!shadow-red7">
+          Change file
+        </Button>
       </div>
     </AlertDialog.Trigger>
     <AlertDialog.Portal>

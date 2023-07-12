@@ -3,7 +3,7 @@ import { Button } from "../button/Button";
 import { useDeeplContext } from "../deeplContext/DeeplContext";
 
 interface ChangeFileAlertProps {
-  onAccept: () => void;
+  onAccept: (all: boolean) => void;
   isLoading: boolean;
 }
 
@@ -29,6 +29,16 @@ const TranslateAllAlert: React.FC<ChangeFileAlertProps> = ({
           </AlertDialog.Title>
           <AlertDialog.Description className="text-mauve11 mt-4 mb-5 text-[15px] leading-normal">
             This action might consume a lot of your Deepl API quota.
+            <ul className="my-4 space-y-2">
+              <li>
+                <b>- Translate all</b> will translate (and override) all the
+                keys in the file.
+              </li>
+              <li>
+                <b>- Translate partially</b> will translate only the keys that
+                have not been translated yet.
+              </li>
+            </ul>
           </AlertDialog.Description>
           <div className="flex justify-end gap-[25px]">
             <AlertDialog.Cancel asChild>
@@ -40,9 +50,19 @@ const TranslateAllAlert: React.FC<ChangeFileAlertProps> = ({
               <div>
                 <Button
                   className="!text-red11 !bg-red4 hover:!bg-red5 focus:!shadow-red7"
-                  onClick={onAccept}
+                  onClick={() => onAccept(true)}
                 >
-                  Yes, translate all
+                  Translate all
+                </Button>
+              </div>
+            </AlertDialog.Action>
+            <AlertDialog.Action asChild>
+              <div>
+                <Button
+                  className="!text-red11 !bg-red4 hover:!bg-red5 focus:!shadow-red7"
+                  onClick={() => onAccept(false)}
+                >
+                  Translate partially
                 </Button>
               </div>
             </AlertDialog.Action>
